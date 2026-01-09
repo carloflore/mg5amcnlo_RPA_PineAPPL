@@ -10,7 +10,6 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include <map>
 
 #include <pineappl_capi.h>
 
@@ -125,7 +124,7 @@ extern "C" void appl_init_()
     // we assume that there is always at least one LO, and zero or one NLO
     assert((nlo_power == (lo_power + 2)) || (nlo_power == lo_power));
 
-    std::vector<uint8_t> subgrid_params;
+    std::vector<uint32_t> subgrid_params;
 
     translation_tables.emplace_back();
     translation_tables.back().reserve(appl_common_fixed_.amp_split_size);
@@ -141,125 +140,65 @@ extern "C" void appl_init_()
         if (sum == lo_power)
         {
             // WB
-            subgrid_params.insert(subgrid_params.end(), { qcd / 2, qed / 2, 0, 0, 0 });
+            subgrid_params.insert(subgrid_params.end(), { qcd / 2, qed / 2, 0, 0 });
         }
         else if (sum == nlo_power)
         {
             // W0
-            subgrid_params.insert(subgrid_params.end(), { qcd / 2, qed / 2, 0, 0, 0 });
+            subgrid_params.insert(subgrid_params.end(), { qcd / 2, qed / 2, 0, 0 });
             // WR
-            subgrid_params.insert(subgrid_params.end(), { qcd / 2, qed / 2, 1, 0, 0 });
+            subgrid_params.insert(subgrid_params.end(), { qcd / 2, qed / 2, 1, 0 });
             // WF
-            subgrid_params.insert(subgrid_params.end(), { qcd / 2, qed / 2, 0, 1, 0 });
+            subgrid_params.insert(subgrid_params.end(), { qcd / 2, qed / 2, 0, 1 });
         }
     }
-    
-    //TODO: instantiate PineAPPL
-    
-        // ---
-    // Construct the objects that are needed to fill the Grid
-
-    // First we define the types of convolutions required by the involved initial-/final-state
-    // hadrons. Then we add the corresponding PID of each of the hadrons, and finally define the
-    // Basis onto which the partons are mapped.
-    pineappl_pid_basis pid_basis = PINEAPPL_PID_BASIS_PDG;
-    //NOTE: this conversion factors below will not work for hadrons in the final state
-    pineappl_conv convs[] = {
-        { PINEAPPL_CONV_TYPE_UNPOL_PDF, 2212 },
-        { PINEAPPL_CONV_TYPE_UNPOL_PDF, 2212 },
-    };
-
-    // Define the kinematics required for this process. In the following example we have ONE
-    // single scale and two momentum fractions (corresponding to the two initial-state hadrons).
-    // The format of the kinematics is: { type, value }.
-    pineappl_kinematics scales = { PINEAPPL_KINEMATICS_SCALE, 0 };
-    pineappl_kinematics x1k = { PINEAPPL_KINEMATICS_X, 0 };
-    pineappl_kinematics x2k = { PINEAPPL_KINEMATICS_X, 1 };
-    pineappl_kinematics kinematics[3] = { scales, x1k, x2k };
-
-    // Define the specificities of the interpolations for each of the kinematic variables.
-    pineappl_reweight_meth scales_reweight = PINEAPPL_REWEIGHT_METH_NO_REWEIGHT; // Reweighting method
-    pineappl_reweight_meth moment_reweight = PINEAPPL_REWEIGHT_METH_APPL_GRID_X;
-    pineappl_map scales_mapping = PINEAPPL_MAP_APPL_GRID_H0; // Mapping method
-    pineappl_map moment_mapping = PINEAPPL_MAP_APPL_GRID_F2;
-    pineappl_interp_meth interpolation_meth = PINEAPPL_INTERP_METH_LAGRANGE;
-
-    // Define the unphysical scale objecs
-    pineappl_scale_func_form scale_mu = { PINEAPPL_SCALE_FUNC_FORM_SCALE, 0 };
-    pineappl_scale_func_form no_scale_mu = { PINEAPPL_SCALE_FUNC_FORM_NO_SCALE, 0 }; // Here `.scale=0` is dummy value
-    pineappl_scale_func_form mu_scales[3] = { scale_mu, scale_mu, no_scale_mu };
-
 
     // Define the settings for the interpolation in x and Q2.
     // These are common to all the grids computed.
     // If values larger than zero (i.e. set by the user) are found the default
     // settings are replaced with the new ones.
-//     auto* key_vals = pineappl_keyval_new();
-    std::map <std::string, double> q2vals = {{"nq2", 40}, {"q2min", 1e2}, {"q2max", 1e8}, {"q2order", 3}};
-    std::map <std::string, double> xvals = {{"nx", 50}, {"xmin", 2e-7}, {"xmax", 1.0}, {"xorder", 3}};
-//     auto q2vals[] = {1e2, 1e8, 40, 3};
-//     auto xvals[] = {2e-7, 1.0, 50, 3};
-    
+    auto* key_vals = pineappl_keyval_new();
+
     if (appl_common_grid_.nQ2 > 0)
     {
-        q2vals["nq2"] = appl_common_grid_.nQ2;
-//         pineappl_keyval_set_int(key_vals, "nq2", appl_common_grid_.nQ2);
+        pineappl_keyval_set_int(key_vals, "nq2", appl_common_grid_.nQ2);
     }
     // Max and min value of Q2
     if (appl_common_grid_.Q2min > 0.0)
     {
-        q2vals["q2min"] = appl_common_grid_.Q2min;
-//         pineappl_keyval_set_double(key_vals, "q2min", appl_common_grid_.Q2min);
+        pineappl_keyval_set_double(key_vals, "q2min", appl_common_grid_.Q2min);
     }
     if (appl_common_grid_.Q2max > 0.0)
     {
-        q2vals["q2max"] = appl_common_grid_.Q2max;
-//         pineappl_keyval_set_double(key_vals, "q2max", appl_common_grid_.Q2max);
+        pineappl_keyval_set_double(key_vals, "q2max", appl_common_grid_.Q2max);
     }
     // Order of the polynomial interpolation in Q2
     if (appl_common_grid_.Q2order > 0)
     {
-        q2vals["q2order"] = appl_common_grid_.Q2order;
-//         pineappl_keyval_set_int(key_vals, "q2order", appl_common_grid_.Q2order);
+        pineappl_keyval_set_int(key_vals, "q2order", appl_common_grid_.Q2order);
     }
     // Number of points for the x interpolation
     if (appl_common_grid_.nx > 0)
     {
-        xvals["nx"] = appl_common_grid_.nx;
-//         pineappl_keyval_set_int(key_vals, "nx", appl_common_grid_.nx);
+        pineappl_keyval_set_int(key_vals, "nx", appl_common_grid_.nx);
     }
     // Min and max value of x
     if (appl_common_grid_.xmin > 0.0)
     {
-        xvals["xmin"] = appl_common_grid_.xmin;        
-//         pineappl_keyval_set_double(key_vals, "xmin", appl_common_grid_.xmin);
+        pineappl_keyval_set_double(key_vals, "xmin", appl_common_grid_.xmin);
     }
     if (appl_common_grid_.xmax > 0.0)
     {
-        xvals["xmax"] = appl_common_grid_.xmax;
-//         pineappl_keyval_set_double(key_vals, "xmax", appl_common_grid_.xmax);
+        pineappl_keyval_set_double(key_vals, "xmax", appl_common_grid_.xmax);
     }
     // Order of the polynomial interpolation in x
     if (appl_common_grid_.xorder > 0)
     {
-        xvals["xorder"] = appl_common_grid_.xorder;
-//         pineappl_keyval_set_int(key_vals, "xorder", appl_common_grid_.xorder);
+        pineappl_keyval_set_int(key_vals, "xorder", appl_common_grid_.xorder);
     }
-    
-    int nq2 = static_cast<int>(q2vals["nq2"]);
-    int q2order = static_cast<int>(q2vals["q2order"]);
-    int nx = static_cast<int>(xvals["nx"]);
-    int xorder = static_cast<int>(q2vals["xorder"]);
-    
-    pineappl_interp interpolations[3] = {
-        { q2vals["q2min"], q2vals["q2max"], nq2, q2order, scales_reweight, scales_mapping, interpolation_meth },  // Interpolation fo `scales`
-        { xvals["xmin"], xvals["xmax"], nx, xorder, moment_reweight, moment_mapping, interpolation_meth }, // Interpolation fo `x1`
-        { xvals["xmin"], xvals["xmax"], nx, xorder, moment_reweight, moment_mapping, interpolation_meth }, // Interpolation fo `x2`
-    };
 
     // Set up the PDF luminosities
-//     auto* lumi = pineappl_lumi_new();
-    auto* lumi = pineappl_channels_new(2); //2 here refers to the no. of hadrons in the process (2 means e.g. DY or SIDIS)
+    auto* lumi = pineappl_lumi_new();
 
     // Loop over parton luminosities
     for (int ilumi = 0; ilumi < appl_common_lumi_.nlumi; ilumi++)
@@ -279,51 +218,33 @@ extern "C" void appl_init_()
             pdg_ids.push_back(b == 0 ? 21 : b);
         }
 
-//         pineappl_lumi_add(lumi, nproc, pdg_ids.data(), nullptr);
-        pineappl_channels_add(lumi, nproc, pdg_ids.data(), nullptr);
+        pineappl_lumi_add(lumi, nproc, pdg_ids.data(), nullptr);
     }
 
     // Use the reweighting function
-//     pineappl_keyval_set_bool(key_vals, "reweight", true);
+    pineappl_keyval_set_bool(key_vals, "reweight", true);
 
     // valid choices are: "LagrangeSubgrid", "NtupleSubgrid"
-//     pineappl_keyval_set_string(key_vals, "subgrid_type", "LagrangeSubgrid");
+    pineappl_keyval_set_string(key_vals, "subgrid_type", "LagrangeSubgrid");
 
     // set PDG ids of the initial states
-//     pineappl_keyval_set_string(key_vals, "initial_state_1",
-//         std::to_string(heprup_.idbmup[0]).c_str());
-//     pineappl_keyval_set_string(key_vals, "initial_state_2",
-//         std::to_string(heprup_.idbmup[1]).c_str());
+    pineappl_keyval_set_string(key_vals, "initial_state_1",
+        std::to_string(heprup_.idbmup[0]).c_str());
+    pineappl_keyval_set_string(key_vals, "initial_state_2",
+        std::to_string(heprup_.idbmup[1]).c_str());
 
     // Create a grid with the binning given in the "obsbins[Nbins+1]" array
-//     grid_obs.push_back(pineappl_grid_new(
-//         lumi,
-//         subgrid_params.size() / 4,
-//         subgrid_params.data(),
-//         appl_common_histokin_.obs_nbins,
-//         appl_common_histokin_.obs_bins,
-//         key_vals
-//     ));
-
-    grid_obs.push_back(pineappl_grid_new2(
+    grid_obs.push_back(pineappl_grid_new(
+        lumi,
+        subgrid_params.size() / 4,
+        subgrid_params.data(),
         appl_common_histokin_.obs_nbins,
         appl_common_histokin_.obs_bins,
-        subgrid_params.size() / 5,
-        subgrid_params.data(),
-        lumi,
-        pid_basis,
-        convs,
-        3, //degree of interpolating function
-        interpolations,
-        kinematics,
-        mu_scales
+        key_vals
     ));
 
-
-//     pineappl_keyval_delete(key_vals);
-//     pineappl_lumi_delete(lumi);
-    pineappl_channels_delete(lumi);
-    
+    pineappl_keyval_delete(key_vals);
+    pineappl_lumi_delete(lumi);
 }
 
 extern "C" void appl_delete_itype_()
@@ -434,8 +355,6 @@ extern "C" void appl_fill_()
     double const x2 = appl_common_weights_.x2[k];
     double const scale2 = appl_common_weights_.muF2[k];
     int const ilumi = appl_common_weights_.flavmap[k] - 1;
-    
-    double vars[] = {x1, x2, scale2};
 
     if (x1 < 0.0 || x1 > 1.0 || x2 < 0.0 || x2 > 1.0)
     {
@@ -451,26 +370,22 @@ extern "C" void appl_fill_()
 
     if (std::fabs(W0[k]) > ttol)
     {
-//         pineappl_grid_fill(grid_obs[nh], x1, x2, scale2, grid_index + 0, obs, ilumi, W0[k]);
-        pineappl_grid_fill2(grid_obs[nh], grid_index + 0, obs, ilumi, vars, W0[k]);
+        pineappl_grid_fill(grid_obs[nh], x1, x2, scale2, grid_index + 0, obs, ilumi, W0[k]);
     }
 
     if (std::fabs(WR[k]) > ttol)
     {
-//         pineappl_grid_fill(grid_obs[nh], x1, x2, scale2, grid_index + 1, obs, ilumi, WR[k]);
-        pineappl_grid_fill2(grid_obs[nh], grid_index + 1, obs, ilumi, vars, WR[k]);
+        pineappl_grid_fill(grid_obs[nh], x1, x2, scale2, grid_index + 1, obs, ilumi, WR[k]);
     }
 
     if (std::fabs(WF[k]) > ttol)
     {
-//         pineappl_grid_fill(grid_obs[nh], x1, x2, scale2, grid_index + 2, obs, ilumi, WF[k]);
-        pineappl_grid_fill2(grid_obs[nh], grid_index + 2, obs, ilumi, vars, WF[k]);
+        pineappl_grid_fill(grid_obs[nh], x1, x2, scale2, grid_index + 2, obs, ilumi, WF[k]);
     }
 
     if (std::fabs(WB[k]) > ttol)
     {
-//         pineappl_grid_fill(grid_obs[nh], x1, x2, scale2, grid_index, obs, ilumi, WB[k]);
-        pineappl_grid_fill2(grid_obs[nh], grid_index, obs, ilumi, vars, WB[k]);
+        pineappl_grid_fill(grid_obs[nh], x1, x2, scale2, grid_index, obs, ilumi, WB[k]);
     }
 }
 
