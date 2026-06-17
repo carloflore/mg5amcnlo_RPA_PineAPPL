@@ -1,0 +1,32 @@
+SetDesc: 'nCTEQ15HIX fit: for nucleus (208, 82): mem=0 => central value; mem 1-43 => 90% eigenvector set.'
+SetIndex: 110950
+Authors: E.P. Segarra, T. Ježo, A. Accardi, P. Duwentäster, O. Hen, T.J. Hobbs, C. Keppel, M. Klasen, K. Kovařík, A. Kusina, J.G. Morfín, K.F. Muzakka, F.I. Olness, I. Schienbein, J.Y. Yu
+Reference: arxiv:2012.11566
+Format: lhagrid1
+DataVersion: 3
+NumMembers: 43
+Particle: 2212
+Flavors: [-5,-4,-3,-2,-1,1,2,3,4,5,21]
+OrderQCD: 1
+FlavorScheme: variable
+NumFlavors: 5
+ErrorType: symmHessian
+ErrorConfLevel: 90
+XMin: 5e-06
+XMax: 1
+QMin: 1.3001
+QMax: 10000
+MZ: 91.188
+MUp: 0
+MDown: 0
+MStrange: 0
+MCharm: 1.3
+MBottom: 4.5
+MTop: 175
+AlphaS_MZ: 0.117997
+AlphaS_OrderQCD: 1
+AlphaS_Type: ipol
+AlphaS_Qs: [1.300000e+00,1.494260e+00,1.736730e+00,2.042900e+00,2.434360e+00,2.941690e+00,3.608810e+00,4.500000e+00,5.866040e+00,7.828770e+00,1.071920e+01,1.509180e+01,2.190300e+01,3.285630e+01,5.109270e+01,8.262520e+01,1.394400e+02,2.465070e+02,4.583780e+02,9.005800e+02,1.878640e+03,4.183110e+03,1.000000e+04]
+AlphaS_Vals: [3.707376e-01,3.431335e-01,3.178606e-01,2.946658e-01,2.733339e-01,2.536786e-01,2.355405e-01,2.187787e-01,2.031831e-01,1.886255e-01,1.750429e-01,1.623754e-01,1.505669e-01,1.395642e-01,1.293175e-01,1.197790e-01,1.109043e-01,1.030964e-01,9.605175e-02,8.941305e-02,8.316651e-02,7.729748e-02,7.179078e-02]
+AlphaS_Lambda4: 0.326
+AlphaS_Lambda5: 0.226

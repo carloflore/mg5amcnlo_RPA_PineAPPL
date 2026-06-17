@@ -1,0 +1,129 @@
+
+<HTML> 
+<HEAD> 
+    <META HTTP-EQUIV="Refresh" CONTENT="10"> 
+    <META HTTP-EQUIV="EXPIRES" CONTENT="20" > 
+    <TITLE>Online Event Generation</TITLE>
+    <link rel=stylesheet href="./HTML/mgstyle.css" type="text/css">
+</HEAD>
+<BODY>
+<script type="text/javascript">
+function UrlExists(url) {
+  var http = new XMLHttpRequest();
+  http.open('HEAD', url, false);
+  try{
+     http.send()
+     }
+  catch(err){
+   return 1==2;
+  }
+  return http.status!=404;
+}
+</script>    
+    <H2 align=center> Results in the loop_sm for p p > t t~ [QCD]
+ </H2> 
+    <HR>
+    
+<H2 ALIGN=CENTER> Currently Running (NLO f.o.)</H2>
+<TABLE BORDER=2 ALIGN=CENTER>
+    <TR ALIGN=CENTER>
+        <TH nowrap ROWSPAN=2 font color="#0000FF"> Run Name </TH>
+        <TH nowrap ROWSPAN=2 font color="#0000FF"> Tag Name </TH>
+        <TH nowrap ROWSPAN=2 font color="#0000FF"> Cards </TH>   
+        <TH nowrap ROWSPAN=2 font color="#0000FF"> Results </TH> 
+        <TH nowrap ROWSPAN=1 COLSPAN=3 font color="#0000FF"> Status/Jobs </TH>
+    </TR>
+        <TR> 
+            <TH>   Queued </TH>
+            <TH>  Running </TH>
+            <TH> Done  </TH>
+        </TR>
+    <TR ALIGN=CENTER> 
+        <TD nowrap ROWSPAN=2> run_05 </TD>
+        <TD nowrap ROWSPAN=2> tag_1 </TD>
+        <TD nowrap ROWSPAN=2> <a href="./Cards/param_card.dat">param_card</a><BR>
+                    <a href="./Cards/run_card.dat">run_card</a><BR>
+                    
+                    
+                    
+                    
+                     <a href="./Cards/shower_card.dat">shower_card</a><BR>
+                     <a href="./Cards/FO_analyse_card.dat">FO_analyse_card</a><BR>
+        </TD>
+        <TD nowrap ROWSPAN=2> <A HREF="./HTML/run_05/results.html">632.2 <font face=symbol>&#177;</font> 5.186 (pb)</A> </TD> 
+        <td ROWSPAN=2 colspan=4>Command '!more' done.<br> Waiting for instruction.</td>
+ </TR>
+ <TR></TR>
+   
+ </TABLE>
+
+    <br>
+    <br>
+    <H2 align="center"> Available Results </H2>
+        <TABLE BORDER=2 align="center">  
+            <TR align="center">
+                <TH>Run</TH> 
+                <TH>Collider</TH> 
+                <TH> Banner </TH>
+                <TH> Cross section (pb) </TH> 
+                <TH> Events  </TH>
+                <TH> Data </TH>  
+                <TH>Output</TH>
+                <TH>Action</TH> 
+            </TR>      
+            
+        <tr>
+        <td rowspan=1>run_01</td> 
+        <td rowspan=1><center>  p  p <br> 6500.0 x 6500.0  GeV </center></td>
+        
+        <td rowspan=1> <a href="./Events/run_01/run_01_tag_1_banner.txt">tag_1</a></td>
+        
+        <td rowspan=1><center><a href="./HTML/run_01/results.html"> 635.3 <font face=symbol>&#177;</font> 3.1 </a>  </center></td>
+        <td rowspan=1><center> 0<center></td><td> parton NLO </td>
+        <td>  <a href="/home/charlie/research/mg5amcnlo_RPA_PineAPPL/test_pp2ttbar_PineAPPL/Events/run_01/MADatNLO.pdf">PDF</a>  <a href="/home/charlie/research/mg5amcnlo_RPA_PineAPPL/test_pp2ttbar_PineAPPL/Events/run_01/MADatNLO.ps">PS</a>  <a href="/home/charlie/research/mg5amcnlo_RPA_PineAPPL/test_pp2ttbar_PineAPPL/Events/run_01/MADatNLO.HwU">HwU data</a>  <a href="/home/charlie/research/mg5amcnlo_RPA_PineAPPL/test_pp2ttbar_PineAPPL/Events/run_01/MADatNLO.gnuplot">GnuPlot</a>  <a href="./Events/run_01/summary.txt">summary</a></td>
+        <td> <INPUT TYPE=SUBMIT VALUE='remove run' onClick="alert('Launch ./bin/aMCatNLO in a shell, and run the following command: remove run_01 parton --tag=tag_1')"></td>
+        </tr>
+        </tr>
+        
+        <tr>
+        <td rowspan=1>run_02</td> 
+        <td rowspan=1><center>  p  p <br> 6500.0 x 6500.0  GeV </center></td>
+        
+        <td rowspan=1> <a href="./Events/run_02/run_02_tag_1_banner.txt">tag_1</a></td>
+        
+        <td rowspan=1><center><a href="./HTML/run_02/results.html"> 632.7 <font face=symbol>&#177;</font> 2.9 </a>  </center></td>
+        <td rowspan=1><center> 0<center></td><td> parton NLO </td>
+        <td>  <a href="/home/charlie/research/mg5amcnlo_RPA_PineAPPL/test_pp2ttbar_PineAPPL/Events/run_02/MADatNLO.pdf">PDF</a>  <a href="/home/charlie/research/mg5amcnlo_RPA_PineAPPL/test_pp2ttbar_PineAPPL/Events/run_02/MADatNLO.ps">PS</a>  <a href="/home/charlie/research/mg5amcnlo_RPA_PineAPPL/test_pp2ttbar_PineAPPL/Events/run_02/MADatNLO.HwU">HwU data</a>  <a href="/home/charlie/research/mg5amcnlo_RPA_PineAPPL/test_pp2ttbar_PineAPPL/Events/run_02/MADatNLO.gnuplot">GnuPlot</a>  <a href="./Events/run_02/summary.txt">summary</a></td>
+        <td> <INPUT TYPE=SUBMIT VALUE='remove run' onClick="alert('Launch ./bin/aMCatNLO in a shell, and run the following command: remove run_02 parton --tag=tag_1')"></td>
+        </tr>
+        </tr>
+        
+        <tr>
+        <td rowspan=0>run_03</td> 
+        <td rowspan=0><center>  p  p <br> 6500.0 x 6500.0  GeV </center></td>
+        
+        </tr>
+        
+        <tr>
+        <td rowspan=1>run_04</td> 
+        <td rowspan=1><center>  p  p <br> 6500.0 x 6500.0  GeV </center></td>
+        
+        <td rowspan=1> <a href="./Events/run_04/run_04_tag_1_banner.txt">tag_1</a></td>
+        
+        <td rowspan=1><center><a href="./HTML/run_04/results.html"> 637.8 <font face=symbol>&#177;</font> 3.3 </a>  </center></td>
+        <td rowspan=1><center> 0<center></td><td> parton NLO </td>
+        <td>  <a href="/home/charlie/research/mg5amcnlo_RPA_PineAPPL/test_pp2ttbar_PineAPPL/Events/run_04/amcblast_obs_0.pdf">PDF</a>  <a href="/home/charlie/research/mg5amcnlo_RPA_PineAPPL/test_pp2ttbar_PineAPPL/Events/run_04/MADatNLO.pdf">PDF</a>  <a href="/home/charlie/research/mg5amcnlo_RPA_PineAPPL/test_pp2ttbar_PineAPPL/Events/run_04/MADatNLO.ps">PS</a>  <a href="/home/charlie/research/mg5amcnlo_RPA_PineAPPL/test_pp2ttbar_PineAPPL/Events/run_04/MADatNLO.HwU">HwU data</a>  <a href="/home/charlie/research/mg5amcnlo_RPA_PineAPPL/test_pp2ttbar_PineAPPL/Events/run_04/MADatNLO.gnuplot">GnuPlot</a>  <a href="./Events/run_04/summary.txt">summary</a></td>
+        <td> <INPUT TYPE=SUBMIT VALUE='remove run' onClick="alert('Launch ./bin/aMCatNLO in a shell, and run the following command: remove run_04 parton --tag=tag_1')"></td>
+        </tr>
+        </tr>
+        
+        <tr>
+        <td rowspan=0>run_05</td> 
+        <td rowspan=0><center>  p  p <br> 6500.0 x 6500.0  GeV </center></td>
+        
+        </tr>
+        
+        </TABLE>
+    <H3 align=center><A HREF="./index.html"> Main Page </A></H3>
+</BODY> 
+</HTML> 

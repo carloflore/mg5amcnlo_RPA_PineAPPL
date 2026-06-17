@@ -1,0 +1,5 @@
+
+FO_EXTRALIBS=
+FO_EXTRAPATHS= 
+FO_INCLUDEPATHS=
+FO_ANALYSE=analysis_HwU_pp_ttx_v2.o HwU.o open_output_files_dummy.o

@@ -1,0 +1,1 @@
+../pineappl_maxproc.inc
