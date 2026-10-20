@@ -554,7 +554,17 @@ extern "C" void appl_term_()
         hbarc2_pb * appl_common_histokin_.norm_histo);
 
     // Write grid to file
-    pineappl_grid_optimize(grid_obs[nh]);
+    // The optimization is chosen explicitly. OPTIMIZE_NODES (detection of a static
+    // scale) is useless here, since the scale is dynamic, and it evaluates the inverse of
+    // the x-map on the nodes, which can abort inside PineAPPL. Channels are symmetrized
+    // only if both beams are convolved with the same PDF.
+    pineappl_gof flags = PINEAPPL_GOF_OPTIMIZE_SUBGRID_TYPE | PINEAPPL_GOF_STRIP_EMPTY_ORDERS
+        | PINEAPPL_GOF_MERGE_SAME_CHANNELS | PINEAPPL_GOF_STRIP_EMPTY_CHANNELS;
+    if (heprup_.idbmup[0] == heprup_.idbmup[1])
+    {
+        flags |= PINEAPPL_GOF_SYMMETRIZE_CHANNELS;
+    }
+    pineappl_grid_optimize_using(grid_obs[nh], flags);
     pineappl_grid_write(grid_obs[nh], ("grid_obs_" + std::to_string(nh) + "_out.pineappl").c_str());
 
     pineappl_grid_delete(grid_obs[nh]);
