@@ -8,6 +8,7 @@ c Wrapper routines for the fixed order analyses
       character(len=100),allocatable :: weights_info(:),ctemp(:)
       character*100 temp
       integer i,npdfs,ii,jj,n,kk,nn
+      integer ibeam_appl
       double precision xsecScale_acc(maxscales,maxscales,maxdynscales)
      $     ,xsecPDFr_acc(0:maxPDFs,maxPDFsets)
       common /scale_pdf_print/xsecScale_acc,xsecPDFr_acc
@@ -327,6 +328,15 @@ c Initialize grid parameters to negative values.
          appl_Q2order = -1
          appl_nx      = -1
          appl_xorder  = -1
+c Beam-by-beam x interpolation parameters (beam 1, beam 2). Negative
+c values mean that the common appl_xmin, appl_xmax, appl_nx, appl_xorder
+c above (or the defaults of the interface) are used for that beam.
+         do ibeam_appl=1,2
+            appl_xmin_beam(ibeam_appl)   = -1d0
+            appl_xmax_beam(ibeam_appl)   = -1d0
+            appl_nx_beam(ibeam_appl)     = -1
+            appl_xorder_beam(ibeam_appl) = -1
+         enddo
       endif
       call analysis_begin(nwgt,weights_info)
 c To keep track of the accumulated results:

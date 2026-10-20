@@ -118,7 +118,12 @@ endif
 
 
 # Option PineAPPL
+# The interface uses the generalized C API (pineappl_grid_new2, ...)
+# introduced in PineAPPL 1.0, with explicit convolutions for each beam
 ifneq ($(pineappl),)
+  ifneq ($(shell pkg-config --atleast-version=1.0.0 pineappl_capi && echo yes),yes)
+    $(error PineAPPL 1.0.0 or later is required (pkg-config module pineappl_capi not found or too old))
+  endif
   APPLLIBS=$(shell pkg-config pineappl_capi --libs)
   CXXFLAGS+=$(shell pkg-config pineappl_capi --cflags)
   pineappl_interface=pineappl_interface.o

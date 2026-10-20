@@ -44,6 +44,17 @@
      2                            appl_nQ2,appl_Q2order,
      3                            appl_nx,appl_xorder
 
+*     Optional beam-by-beam parameters of the x interpolation (index 1 is
+*     beam 1, index 2 is beam 2), useful for asymmetric collisions. A
+*     negative value (the default) means that the common value in
+*     appl_common_grid (or the default of the interface) is used for that
+*     beam. Keep them equal for the two beams if the beams are identical
+*     particles, otherwise the grid cannot be symmetrized.
+      double precision appl_xmin_beam(2),appl_xmax_beam(2)
+      integer appl_nx_beam(2),appl_xorder_beam(2)
+      common / appl_common_grid_beam / appl_xmin_beam,appl_xmax_beam,
+     1                                 appl_nx_beam,appl_xorder_beam
+
 *     Parameters of the histograms
       double precision appl_www_histo,appl_norm_histo
       double precision appl_obs_histo
